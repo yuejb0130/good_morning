@@ -65,5 +65,8 @@ data = {"day": {"value": time.strftime("%Y-%m-%d")},
         "love_days": {"value": get_count(), "color": get_random_color()},
         "birthday_left": {"value": get_birthday(), "color": get_random_color()},
         "words": {"value": get_words(), "color": get_random_color()}}
-res = wm.send_template(user_id, template_id, data)
-print(res)
+# 设置同时给宁宁以及我定时推送
+res1 = wm.send_template(user_id[:28], template_id, data)
+res2 = wm.send_template(user_id[-28:], template_id, data)
+print(res1)
+print(res2)
