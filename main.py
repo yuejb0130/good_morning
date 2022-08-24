@@ -1,12 +1,13 @@
-from datetime import date, datetime
 import math
-from wechatpy import WeChatClient
-from wechatpy.client.api import WeChatMessage, WeChatTemplate
-import requests
 import os
 import random
 import time
+from datetime import date
 from datetime import datetime
+
+import requests
+from wechatpy import WeChatClient
+from wechatpy.client.api import WeChatMessage
 
 today = datetime.now()
 start_date = os.environ['START_DATE']
@@ -18,20 +19,6 @@ app_secret = os.environ["APP_SECRET"]
 
 user_id = os.environ["USER_ID"]
 template_id = os.environ["TEMPLATE_ID"]
-
-
-def get_week_day(date):
-    week_day = {
-        0: '星期一',
-        1: '星期二',
-        2: '星期三',
-        3: '星期四',
-        4: '星期五',
-        5: '星期六',
-        6: '星期日',
-    }
-    day = date.weekday()  # weekday()可以获得是星期几
-    return week_day[day]
 
 
 def get_weather():
@@ -69,8 +56,9 @@ client = WeChatClient(app_id, app_secret)
 wm = WeChatMessage(client)
 wea, temperature = get_weather()
 data = {"day": {"value": time.strftime("%Y-%m-%d")},
-        "week": {"value": get_week_day(datetime.datetime.now()), "color": get_random_color()},
-        "city": {"value": city, "color": get_random_color()}, "weather": {"value": wea, "color": get_random_color()},
+        "week": {"value": datetime.today().strftime('%A'), "color": get_random_color()},
+        "city": {"value": city, "color": get_random_color()},
+        "weather": {"value": wea, "color": get_random_color()},
         "temperature": {"value": temperature, "color": get_random_color()},
         "love_days": {"value": get_count(), "color": get_random_color()},
         "birthday_left": {"value": get_birthday(), "color": get_random_color()},
