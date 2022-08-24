@@ -20,36 +20,60 @@ user_id = os.environ["USER_ID"]
 template_id = os.environ["TEMPLATE_ID"]
 
 
+def get_week_day(date):
+    week_day = {
+        0: '星期一',
+        1: '星期二',
+        2: '星期三',
+        3: '星期四',
+        4: '星期五',
+        5: '星期六',
+        6: '星期日',
+    }
+    day = date.weekday()  # weekday()可以获得是星期几
+    return week_day[day]
+
+
 def get_weather():
-  url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
-  res = requests.get(url).json()
-  weather = res['data']['list'][0]
-  return weather['weather'], math.floor(weather['temp'])
+    url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
+    res = requests.get(url).json()
+    weather = res['data']['list'][0]
+    return weather['weather'], math.floor(weather['temp'])
+
 
 def get_count():
-  delta = today - datetime.strptime(start_date, "%Y-%m-%d")
-  return delta.days
+    delta = today - datetime.strptime(start_date, "%Y-%m-%d")
+    return delta.days
+
 
 def get_birthday():
-  next = datetime.strptime(str(date.today().year) + "-" + birthday, "%Y-%m-%d")
-  if next < datetime.now():
-    next = next.replace(year=next.year + 1)
-  return (next - today).days
+    next = datetime.strptime(str(date.today().year) + "-" + birthday, "%Y-%m-%d")
+    if next < datetime.now():
+        next = next.replace(year=next.year + 1)
+    return (next - today).days
+
 
 def get_words():
-  words = requests.get("https://api.shadiao.pro/chp")
-  if words.status_code != 200:
-    return get_words()
-  return words.json()['data']['text']
+    words = requests.get("https://api.shadiao.pro/chp")
+    if words.status_code != 200:
+        return get_words()
+    return words.json()['data']['text']
+
 
 def get_random_color():
-  return "#%06x" % random.randint(0, 0xFFFFFF)
+    return "#%06x" % random.randint(0, 0xFFFFFF)
 
 
 client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
 wea, temperature = get_weather()
-data = {"day":{"value":time.strftime("%Y-%m-%d")},"week":{"value":datetime.today().strftime('%A'),"color":get_random_color()},"city":{"value":city,"color":get_random_color()},"weather":{"value":wea,"color":get_random_color()},"temperature":{"value":temperature,"color":get_random_color()},"love_days":{"value":get_count(),"color":get_random_color()},"birthday_left":{"value":get_birthday(),"color":get_random_color()},"words":{"value":get_words(), "color":get_random_color()}}
+data = {"day": {"value": time.strftime("%Y-%m-%d")},
+        "week": {"value": get_week_day(date), "color": get_random_color()},
+        "city": {"value": city, "color": get_random_color()}, "weather": {"value": wea, "color": get_random_color()},
+        "temperature": {"value": temperature, "color": get_random_color()},
+        "love_days": {"value": get_count(), "color": get_random_color()},
+        "birthday_left": {"value": get_birthday(), "color": get_random_color()},
+        "words": {"value": get_words(), "color": get_random_color()}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
