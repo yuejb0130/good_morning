@@ -27,7 +27,7 @@ template_id = os.environ["TEMPLATE_ID"]
 # app_id = "wx49e7eddadffbf05e"
 # app_secret = "d25ab0ba046f79c110b620a9837da35d"
 # user_id = "o_Tnm6BNGYVt4b7Rd6rn91ucKIbk,o_Tnm6JVuaTN4U2URm4oSbWKLZ5U"
-# template_id = "OdhnBv_P8t7p-3GnFblHgdURfAkXw3IsPr8aqrhqhWg"
+# template_id = "_DBysWLrs2q_N7-N9t3Rcm5AMW8TxLUemTkM9FB1mhI"
 
 # 定时发送数据
 # o_Tnm6JVuaTN4U2URm4oSbWKLZ5U,o_Tnm6GhHixABnUhzXOqhympo7ZI
@@ -77,6 +77,16 @@ def get_words():
     return words.json()['data']['text']
 
 
+# 星座运势
+def get_xingzuo():
+    url = "http://api.tianapi.com/star/index?key=21fe23d36674cff7afc2c12e4f3133ec&astro=处女座&date=" + \
+          time.strftime("%Y-%m-%d")
+    res = requests.get(url).json()
+    return res['newslist'][0]['content'], res['newslist'][2]['content'], res['newslist'][3]['content'], \
+           res['newslist'][4]['content'], res['newslist'][5]['content'], res['newslist'][6]['content'], \
+           res['newslist'][8]['content']
+
+
 # 获取字体颜色
 def get_random_color():
     return "#%06x" % random.randint(0, 0xFFFFFF)
@@ -86,6 +96,10 @@ client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
 wea, temperature, low, high = get_weather()
+# 综合指数 工作指数 财运指数
+# 健康指数 幸运颜色 幸运数字
+# 今日概述
+zonghe, gongzuo, caiyun, jiankang, yanse, shuzi, gaishu = get_xingzuo()
 data = {"day": {"value": time.strftime("%Y-%m-%d")},
         "week": {"value": datetime.today().strftime('%A'), "color": get_random_color()},
         "city": {"value": city, "color": get_random_color()},
@@ -95,7 +109,15 @@ data = {"day": {"value": time.strftime("%Y-%m-%d")},
         "high": {"value": high, "color": get_random_color()},
         "love_days": {"value": get_count(), "color": get_random_color()},
         "birthday_left": {"value": get_birthday(), "color": get_random_color()},
-        "words": {"value": get_words(), "color": get_random_color()}}
+        "words": {"value": get_words(), "color": get_random_color()},
+        "zonghe": {"value": zonghe, "color": get_random_color()},
+        "gongzuo": {"value": gongzuo, "color": get_random_color()},
+        "caiyun": {"value": caiyun, "color": get_random_color()},
+        "jiankang": {"value": jiankang, "color": get_random_color()},
+        "yanse": {"value": yanse, "color": get_random_color()},
+        "shuzi": {"value": shuzi, "color": get_random_color()},
+        "gaishu": {"value": gaishu, "color": get_random_color()}}
+
 # 设置同时给宁宁以及我定时推送
 res1 = wm.send_template(user_id[:28], template_id, data)
 res2 = wm.send_template(user_id[-28:], template_id, data)
