@@ -66,7 +66,7 @@ def get_birthday():
     next = datetime.strptime(str(date.today().year) + "-" + birthday, "%Y-%m-%d")
     if next < datetime.now():
         next = next.replace(year=next.year + 1)
-    return (next - (today.replace( hour=0, minute=0, second=0,microsecond=0))).days
+    return (next - (today.replace(hour=0, minute=0, second=0, microsecond=0))).days
 
 
 # 获取文案
