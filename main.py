@@ -1,4 +1,3 @@
-import math
 import os
 import random
 import time
@@ -26,11 +25,11 @@ template_id = os.environ["TEMPLATE_ID"]
 # birthday = "09-04"
 # app_id = "wx49e7eddadffbf05e"
 # app_secret = "d25ab0ba046f79c110b620a9837da35d"
-# user_id = "o_Tnm6BNGYVt4b7Rd6rn91ucKIbk,o_Tnm6JVuaTN4U2URm4oSbWKLZ5U"
-# template_id = "_DBysWLrs2q_N7-N9t3Rcm5AMW8TxLUemTkM9FB1mhI"
+# user_id = "o_Tnm6JVuaTN4U2URm4oSbWKLZ5U,o_Tnm6JVuaTN4U2URm4oSbWKLZ5U"
+# template_id = "K5tT82OTxRx2n5pDdHDU8pirhukdJy-Sn2kZZDR_ASg"
 
 # 定时发送数据
-# o_Tnm6JVuaTN4U2URm4oSbWKLZ5U,o_Tnm6GhHixABnUhzXOqhympo7ZI
+# user_id = "o_Tnm6JVuaTN4U2URm4oSbWKLZ5U,o_Tnm6GhHixABnUhzXOqhympo7ZI"
 
 """"
 宁仙子的专属消息提醒
@@ -49,10 +48,13 @@ template_id = os.environ["TEMPLATE_ID"]
 
 # 获取天气以及温度
 def get_weather():
-    url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
+    url = "https://api.asilu.com/weather/?city=" + city
     res = requests.get(url).json()
-    weather = res['data']['list'][0]
-    return weather['weather'], math.floor(weather['temp']), math.floor(weather['low']), math.floor(weather['high'])
+    weather = res['weather'][0]
+    temp = (weather['temp'])[:(weather['temp']).index('℃')]
+    high = temp.split('/')[0]
+    low = temp.split('/')[1]
+    return weather['weather'], weather['wind'], high, low
 
 
 # 计算纪念日天数
@@ -95,7 +97,7 @@ def get_random_color():
 client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
-wea, temperature, low, high = get_weather()
+weather, wind, high, low = get_weather()
 # 综合指数 工作指数 财运指数
 # 健康指数 幸运颜色 幸运数字
 # 今日概述
@@ -103,8 +105,8 @@ zonghe, gongzuo, caiyun, jiankang, yanse, shuzi, gaishu = get_xingzuo()
 data = {"day": {"value": time.strftime("%Y-%m-%d")},
         "week": {"value": datetime.today().strftime('%A'), "color": get_random_color()},
         "city": {"value": city, "color": get_random_color()},
-        "weather": {"value": wea, "color": get_random_color()},
-        "temperature": {"value": temperature, "color": get_random_color()},
+        "weather": {"value": weather, "color": get_random_color()},
+        "wind": {"value": wind, "color": get_random_color()},
         "low": {"value": low, "color": get_random_color()},
         "high": {"value": high, "color": get_random_color()},
         "love_days": {"value": get_count(), "color": get_random_color()},
