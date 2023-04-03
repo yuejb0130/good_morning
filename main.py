@@ -122,6 +122,6 @@ data = {"day": {"value": time.strftime("%Y-%m-%d")},
 
 # 设置同时给宁宁以及我定时推送
 res1 = wm.send_template(user_id[:28], template_id, data)
-res2 = wm.send_template(user_id[-28:], template_id, data)
+# res2 = wm.send_template(user_id[-28:], template_id, data)
 print(res1)
-print(res2)
+# print(res2)
