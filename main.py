@@ -121,7 +121,7 @@ data = {"day": {"value": time.strftime("%Y-%m-%d")},
         "gaishu": {"value": gaishu, "color": get_random_color()}}
 
 # 设置同时给宁宁以及我定时推送
-res1 = wm.send_template(user_id[:28], template_id, data)
+# res1 = wm.send_template(user_id[:28], template_id, data)
 # res2 = wm.send_template(user_id[-28:], template_id, data)
-print(res1)
+# print(res1)
 # print(res2)
