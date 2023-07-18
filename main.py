@@ -24,17 +24,15 @@ key = "&key=c7a171525cda4c689a2abd796bbdbcfd"
 
 # 测试数据
 # start_date = "2022-02-04"
-# city = "北京"
-# birthday = "12-10"
-# app_id = "wx49e7eddadffbf05e"
-# app_secret = "d25ab0ba046f79c110b620a9837da35d"
-# user_id = "o_Tnm6JVuaTN4U2URm4oSbWKLZ5U,o_Tnm6JVuaTN4U2URm4oSbWKLZ5U"
-# template_id = "70YQpHbu6uPHmF1vM9idloii5v7FzflK4-Bge_cKnYY"
+# city = "吉林"
+# birthday = "12-23"
+# app_id = "wxe3b9865fad1bf47d"
+# app_secret = "eff75a2a646389b7f38a8a4bb035a5b4"
+# user_id = "ob5YG6azKXTtS3NbSmXl60r4lCiQ,ob5YG6azKXTtS3NbSmXl60r4lCiQ"
+# template_id = "Q0pJMawrHpKFOvK6MyGme2ww0kTqNpGCrqWDUIE33Nc"
 
 """"
-
-专属消息提醒 
-早上好，我的宝！{{thing.DATA}}
+早上好，妍妍!{{thing.DATA}}
 今天是 {{day.DATA}} 
 城市：{{city.DATA}} 
 温度：{{temp.DATA}} ℃ 
@@ -43,8 +41,7 @@ key = "&key=c7a171525cda4c689a2abd796bbdbcfd"
 综合指数：{{zonghe.DATA}} 
 幸运颜色：{{yanse.DATA}} 
 幸运数字：{{shuzi.DATA}} 
-今天是我们在一起：{{love_days.DATA}} 天 
-距离你的生日还有：{{birthday_left.DATA}}天 
+距离考研还有{{birthday_left.DATA}}天 
 今日文案：{{wenan.DATA}}
 """
 
@@ -158,7 +155,7 @@ data = {
     "zonghe": {"value": zonghe, "color": get_random_color()},
     "yanse": {"value": yanse, "color": get_random_color()},
     "shuzi": {"value": shuzi, "color": get_random_color()},
-    "love_days": {"value": get_count(), "color": get_random_color()},
+    # "love_days": {"value": get_count(), "color": get_random_color()},
     "birthday_left": {"value": get_birthday(), "color": get_random_color()},
     "wenan": {"value": get_words(), "color": get_random_color()}}
 
@@ -166,4 +163,4 @@ client = WeChatClient(app_id, app_secret)
 wm = WeChatMessage(client)
 # 定时推送
 res1 = wm.send_template(user_id[:28], template_id, data)
-# res2 = wm.send_template(user_id[-28:], template_id, data)
+res2 = wm.send_template(user_id[-28:], template_id, data)
