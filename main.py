@@ -28,7 +28,7 @@ key = "&key=c7a171525cda4c689a2abd796bbdbcfd"
 # birthday = "12-23"
 # app_id = "wxe3b9865fad1bf47d"
 # app_secret = "eff75a2a646389b7f38a8a4bb035a5b4"
-# user_id = "ob5YG6azKXTtS3NbSmXl60r4lCiQ,ob5YG6azKXTtS3NbSmXl60r4lCiQ"
+# user_id = "ob5YG6azKXTtS3NbSmXl60r4lCiQ,ob5YG6dBBWxInyoVYMpRLjs7JBaw"
 # template_id = "Q0pJMawrHpKFOvK6MyGme2ww0kTqNpGCrqWDUIE33Nc"
 
 """"
@@ -162,5 +162,5 @@ data = {
 client = WeChatClient(app_id, app_secret)
 wm = WeChatMessage(client)
 # 定时推送
-res1 = wm.send_template(user_id[:28], template_id, data)
-res2 = wm.send_template(user_id[-28:], template_id, data)
+#res1 = wm.send_template(user_id[:28], template_id, data)
+#res2 = wm.send_template(user_id[-28:], template_id, data)
