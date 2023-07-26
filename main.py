@@ -162,5 +162,5 @@ data = {
 client = WeChatClient(app_id, app_secret)
 wm = WeChatMessage(client)
 # 定时推送
-res1 = wm.send_template(user_id[:28], template_id, data)
-res2 = wm.send_template(user_id[-28:], template_id, data)
+#res1 = wm.send_template(user_id[:28], template_id, data)
+#res2 = wm.send_template(user_id[-28:], template_id, data)
